@@ -10,10 +10,18 @@
 #include "../threadpp_assert.h"
 namespace threadpp
 {
+    unsigned win_thread::win_fp_delegate(void *context)
+    {
+        win_context* wctx = static_cast<win_context*>(context);
+        wctx->fp(wctx->context);
+        return 0;
+    }
     
     win_thread::win_thread(runnable r,void* t)
     {
-        _handle = _beginthreadex(NULL,0,r,t,0,&_thread_id);
+        _context.fp = r;
+        _context.context = t;
+        _handle = _beginthreadex(NULL,0,win_thread::win_fp_delegate,&_context,0,&_thread_id);
     }
     
     win_thread::~win_thread()

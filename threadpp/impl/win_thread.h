@@ -15,13 +15,19 @@ namespace threadpp
 {
     class win_thread
     {
+        struct win_context
+        {
+            void(*fp)(void*);
+            void* context;
+        } _context;
+        static unsigned __stdcall win_fp_delegate(void* context);
         unsigned int _thread_id;
         HANDLE _handle;
         win_thread(){};
         void operator=(const win_thread& t){};
         win_thread(const win_thread& t){};
     public:
-        typedef unsigned __stdcall (*runnable)(void* ctx);
+        typedef void (*runnable)(void* ctx);
         
         win_thread(runnable r,void* t);
         
