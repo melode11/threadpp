@@ -8,9 +8,14 @@
 
 #include "win_thread.h"
 #include "../threadpp_assert.h"
+#if NO_CRT
+#else
+#include <process.h>
+#endif
 namespace threadpp
 {
-    unsigned win_thread::win_fp_delegate(void *context)
+
+	win_thread::handle_t win_thread::win_fp_delegate(void *context)
     {
         win_context* wctx = static_cast<win_context*>(context);
         wctx->fp(wctx->context);
@@ -21,12 +26,16 @@ namespace threadpp
     {
         _context.fp = r;
         _context.context = t;
-        _handle = _beginthreadex(NULL,0,win_thread::win_fp_delegate,&_context,0,&_thread_id);
+#if NO_CRT
+		_handle = CreateThread(NULL,NULL,win_thread::win_fp_delegate,&_context,0,&_thread_id);
+#else
+		_handle = (HANDLE)_beginthreadex(NULL,0,win_thread::win_fp_delegate,&_context,0,&_thread_id);
+#endif		
     }
     
     win_thread::~win_thread()
     {
-        
+        ASSERT(_handle == 0,"%s","must join or detach a thread before destructing it");
     }
     
     void win_thread::join()
@@ -39,7 +48,8 @@ namespace threadpp
     
     void win_thread::detach()
     {
-
+		CloseHandle(_handle);
+        _handle = 0;
     }
     
     bool win_thread::is_equal(const win_thread& t) const
@@ -49,11 +59,21 @@ namespace threadpp
     
     void win_thread::sleep(unsigned long millisecs)
     {
-        
+		Sleep(millisecs);
     }
     
     bool win_thread::is_current_thread(const win_thread& t)
     {
-
+		return GetCurrentThreadId() == t._thread_id;
     }
+
+	unsigned int win_thread::get_id() const
+	{
+		return static_cast<unsigned int>(_thread_id);
+	}
+
+	unsigned int win_thread::get_current_thread_id()
+	{
+		return  static_cast<unsigned int>(GetCurrentThreadId());
+	}
 }

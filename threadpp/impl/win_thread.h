@@ -20,8 +20,13 @@ namespace threadpp
             void(*fp)(void*);
             void* context;
         } _context;
-        static unsigned __stdcall win_fp_delegate(void* context);
-        unsigned int _thread_id;
+#if NO_CRT
+        typedef DWORD handle_t;
+#else
+		typedef unsigned handle_t;
+#endif
+		static handle_t __stdcall win_fp_delegate(void* context);
+        handle_t _thread_id;
         HANDLE _handle;
         win_thread(){};
         void operator=(const win_thread& t){};
@@ -37,6 +42,8 @@ namespace threadpp
         bool is_equal(const win_thread& t) const;
         static void sleep(unsigned long millisecs);
         static bool is_current_thread(const win_thread& t);
+
+		unsigned int get_id() const;
         static unsigned int get_current_thread_id();
     };
 }

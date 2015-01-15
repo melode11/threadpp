@@ -34,3 +34,4 @@ namespace threadpp
     typedef pthread_recursivelock recursivelock;
 }
 #endif
+#endif

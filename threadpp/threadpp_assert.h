@@ -9,6 +9,11 @@
 #ifndef threadpp_assert_h
 #define threadpp_assert_h
 
+//forward VC++ DEBUG symbol.
+#if defined(_DEBUG) && !defined(DEBUG)
+#define DEBUG _DEBUG
+#endif
+
 #if DEBUG //assertions
 #ifdef __cplusplus
 #include <cassert>
