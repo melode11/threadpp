@@ -13,12 +13,19 @@ namespace threadpp
 {
     class pthread_thread
     {
+        struct pthread_context
+        {
+            void(*fp)(void* context);
+            void* context;
+        } _context;
+        
         pthread_t _thread;
         pthread_thread(){};
         void operator=(const pthread_thread& t){};
         pthread_thread(const pthread_thread& t){};
+        static void* pthread_fp_delegate(void*);
     public:
-        typedef void* (*runnable)(void* ctx);
+        typedef void (*runnable)(void* ctx);
         
         pthread_thread(runnable r,void* t);
         

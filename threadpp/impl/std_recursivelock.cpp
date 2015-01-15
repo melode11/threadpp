@@ -11,6 +11,7 @@
 using namespace std;
 
 namespace threadpp{
+    
     std_recursivelock::std_recursivelock():_mutex(), _lock(_mutex),_cond()
     {
     }

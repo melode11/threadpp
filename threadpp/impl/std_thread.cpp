@@ -11,8 +11,13 @@
 using namespace std;
 namespace threadpp
 {
+    void* std_fp_delegate(std_thread::runnable r, void* context)
+    {
+        r(context);
+        return nullptr;
+    }
     
-    std_thread::std_thread(runnable r,void* t):_thread(std::bind(r, t))
+    std_thread::std_thread(runnable r,void* t):_thread(std::bind(std_fp_delegate,r,t))
     {
     }
     

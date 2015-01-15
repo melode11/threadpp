@@ -19,7 +19,7 @@ namespace threadpp
         void operator=(const std_thread& t){};
         std_thread(const std_thread& t){};
     public:
-        typedef void* (*runnable)(void* ctx);
+        typedef void (*runnable)(void* ctx);
         
         std_thread(runnable r,void* t);
         
