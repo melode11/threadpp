@@ -31,8 +31,6 @@ namespace threadpp
         
         pthread_thread(runnable r,void* t);
         
-//        pthread_thread(runnable r,void* t,float priority);
-        
         ~pthread_thread();
         void join();
         void detach();
