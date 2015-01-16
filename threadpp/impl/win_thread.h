@@ -33,6 +33,8 @@ namespace threadpp
         win_thread(const win_thread& t){};
     public:
         typedef void (*runnable)(void* ctx);
+        typedef unsigned int id_type;
+        static id_type null_id;
         
         win_thread(runnable r,void* t);
         
@@ -40,11 +42,9 @@ namespace threadpp
         void join();
         void detach();
         bool is_equal(const win_thread& t) const;
+        id_type get_id() const;
+        static id_type current_thread_id();
         static void sleep(unsigned long millisecs);
-        static bool is_current_thread(const win_thread& t);
-
-		unsigned int get_id() const;
-        static unsigned int get_current_thread_id();
     };
 }
 

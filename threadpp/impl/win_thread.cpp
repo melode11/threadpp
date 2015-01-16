@@ -15,6 +15,8 @@
 namespace threadpp
 {
 
+    win_thread::id_type win_thread::null_id = 0;
+    
 	win_thread::handle_t win_thread::win_fp_delegate(void *context)
     {
         win_context* wctx = static_cast<win_context*>(context);
@@ -62,17 +64,12 @@ namespace threadpp
 		Sleep(millisecs);
     }
     
-    bool win_thread::is_current_thread(const win_thread& t)
-    {
-		return GetCurrentThreadId() == t._thread_id;
-    }
-
-	unsigned int win_thread::get_id() const
+	win_thread::id_type win_thread::get_id() const
 	{
 		return static_cast<unsigned int>(_thread_id);
 	}
 
-	unsigned int win_thread::get_current_thread_id()
+	win_thread::id_type win_thread::current_thread_id()
 	{
 		return  static_cast<unsigned int>(GetCurrentThreadId());
 	}

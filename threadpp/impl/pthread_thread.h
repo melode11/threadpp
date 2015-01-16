@@ -26,6 +26,8 @@ namespace threadpp
         static void* pthread_fp_delegate(void*);
     public:
         typedef void (*runnable)(void* ctx);
+        typedef unsigned long long id_type;
+        static id_type null_id;
         
         pthread_thread(runnable r,void* t);
         
@@ -35,8 +37,9 @@ namespace threadpp
         void join();
         void detach();
         bool is_equal(const pthread_thread& t) const;
+        id_type get_id() const;
+        static id_type current_thread_id();
         static void sleep(unsigned long millisecs);
-        static bool is_current_thread(const pthread_thread& t);
     };
 }
 

@@ -11,6 +11,8 @@
 using namespace std;
 namespace threadpp
 {
+    std_thread::id_type std_thread::null_id;
+    
     void* std_fp_delegate(std_thread::runnable r, void* context)
     {
         r(context);
@@ -41,13 +43,18 @@ namespace threadpp
         return _thread.get_id() == t._thread.get_id();
     }
     
+    std_thread::id_type std_thread::get_id() const
+    {
+        return _thread.get_id();
+    }
+    
     void std_thread::sleep(unsigned long millisecs)
     {
         this_thread::sleep_for(chrono::milliseconds(millisecs));
     }
     
-    bool std_thread::is_current_thread(const std_thread& t)
+    std_thread::id_type std_thread::current_thread_id()
     {
-        return this_thread::get_id() == t._thread.get_id();
+        return this_thread::get_id();
     }
 }

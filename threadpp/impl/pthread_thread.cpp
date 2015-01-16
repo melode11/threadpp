@@ -14,6 +14,7 @@
 #include <unistd.h>
 namespace threadpp
 {
+    pthread_thread::id_type pthread_thread::null_id = 0;
     
     void* pthread_thread::pthread_fp_delegate(void* ctx)
     {
@@ -82,8 +83,25 @@ namespace threadpp
         usleep((useconds_t)millisecs*1000);
     }
     
-    bool pthread_thread::is_current_thread(const pthread_thread& t)
+    pthread_thread::id_type pthread_thread::get_id() const
     {
-        return pthread_equal(pthread_self(),t._thread);
+#ifdef __APPLE__
+        __uint64_t tid;
+        return pthread_threadid_np(_thread, &tid);
+        return tid;
+#else
+        return reinterpret_cast<unsigned long long>(_thread);
+#endif
+    }
+    
+    pthread_thread::id_type pthread_thread::current_thread_id()
+    {
+#ifdef __APPLE__
+        __uint64_t tid;
+        return pthread_threadid_np(pthread_self(), &tid);
+        return tid;
+#else
+        return reinterpret_cast<unsigned long long>(pthread_self());
+#endif
     }
 }

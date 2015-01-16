@@ -1,26 +1,26 @@
 //
-//  std_recursivelock.h
+//  std_lock.h
 //  threadpp
 //
 //  Created by Melo Yao on 1/15/15.
 //  Copyright (c) 2015 Melo Yao. All rights reserved.
 //
 
-#ifndef __threadpp__std_recursivelock__
-#define __threadpp__std_recursivelock__
+#ifndef __threadpp__std_lock__
+#define __threadpp__std_lock__
 #include <mutex>
 #include <condition_variable>
 namespace threadpp
 {
-    class std_recursivelock
+    class std_lock
     {
-        std::recursive_mutex _mutex;
+        std::mutex _mutex;
         std::condition_variable_any _cond;
-        void operator=(const std_recursivelock& l){};
-        std_recursivelock(const std_recursivelock& l){};
+        void operator=(const std_lock& l){};
+        std_lock(const std_lock& l){};
     public:
-        std_recursivelock();
-        ~std_recursivelock();
+        std_lock();
+        ~std_lock();
         void lock();
         void unlock();
         void wait();
@@ -30,4 +30,4 @@ namespace threadpp
     };
 }
 
-#endif /* defined(__threadpp__std_recursivelock__) */
+#endif /* defined(__threadpp__std_lock__) */

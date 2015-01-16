@@ -19,7 +19,11 @@ namespace threadpp
         void operator=(const std_thread& t){};
         std_thread(const std_thread& t){};
     public:
+        typedef std::thread::id id_type;
+        
         typedef void (*runnable)(void* ctx);
+        
+        static id_type null_id;
         
         std_thread(runnable r,void* t);
         
@@ -27,8 +31,9 @@ namespace threadpp
         void join();
         void detach();
         bool is_equal(const std_thread& t) const;
+        id_type get_id() const;
+        static id_type current_thread_id();
         static void sleep(unsigned long millisecs);
-        static bool is_current_thread(const std_thread& t);
     };
 }
 
