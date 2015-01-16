@@ -27,30 +27,27 @@ namespace threadpp
     {
         _context.fp = r;
         _context.context = t;
-        pthread_attr_t tattr;
-        pthread_attr_init(&tattr);
-        int code = pthread_create(&_thread, &tattr, pthread_thread::pthread_fp_delegate, &_context);
+        int code = pthread_create(&_thread, NULL, pthread_thread::pthread_fp_delegate, &_context);
         ASSERT(code==0,"create thread failed,error:%s",strerror(code));
-        pthread_attr_destroy(&tattr);
     }
     
-    pthread_thread::pthread_thread(runnable r,void* t,float priority)
-    {
-        _context.fp = r;
-        _context.context = t;
-        pthread_attr_t tattr;
-        pthread_attr_init(&tattr);
-        struct sched_param schp;
-        int policy = SCHED_FIFO;
-        pthread_attr_getschedpolicy(&tattr, &policy);
-        pthread_attr_getschedparam(&tattr, &schp);
-        float pr =fminf(1.0f,fmaxf(0.0f, priority));
-        schp.sched_priority = sched_get_priority_min(policy) + pr*(sched_get_priority_max(policy) - sched_get_priority_min(policy));
-        pthread_attr_setschedparam(&tattr, &schp);
-        int code = pthread_create(&_thread, &tattr, pthread_thread::pthread_fp_delegate, &_context);
-        ASSERT(code==0,"create thread failed,error:%s",strerror(code));
-        pthread_attr_destroy(&tattr);
-    }
+//    pthread_thread::pthread_thread(runnable r,void* t,float priority)
+//    {
+//        _context.fp = r;
+//        _context.context = t;
+//        pthread_attr_t tattr;
+//        pthread_attr_init(&tattr);
+//        struct sched_param schp;
+//        int policy = SCHED_FIFO;
+//        pthread_attr_getschedpolicy(&tattr, &policy);
+//        pthread_attr_getschedparam(&tattr, &schp);
+//        float pr =fminf(1.0f,fmaxf(0.0f, priority));
+//        schp.sched_priority = sched_get_priority_min(policy) + pr*(sched_get_priority_max(policy) - sched_get_priority_min(policy));
+//        pthread_attr_setschedparam(&tattr, &schp);
+//        int code = pthread_create(&_thread, &tattr, pthread_thread::pthread_fp_delegate, &_context);
+//        ASSERT(code==0,"create thread failed,error:%s",strerror(code));
+//        pthread_attr_destroy(&tattr);
+//    }
     
     pthread_thread::~pthread_thread()
     {
@@ -90,7 +87,7 @@ namespace threadpp
         return pthread_threadid_np(_thread, &tid);
         return tid;
 #else
-        return reinterpret_cast<unsigned long long>(_thread);
+        return (unsigned long long)(_thread);
 #endif
     }
     
@@ -101,7 +98,7 @@ namespace threadpp
         return pthread_threadid_np(pthread_self(), &tid);
         return tid;
 #else
-        return reinterpret_cast<unsigned long long>(pthread_self());
+        return (unsigned long long)(pthread_self());
 #endif
     }
 }

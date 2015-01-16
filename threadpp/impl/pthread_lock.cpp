@@ -25,14 +25,16 @@ void timespec_for(struct timespec* t,unsigned long millisecs) {
 namespace threadpp{
     pthread_lock::pthread_lock()
     {
-        pthread_mutexattr_t mattr;
-        pthread_mutexattr_init(&mattr);
-        pthread_mutex_init(&_mutex, &mattr);
-        pthread_mutexattr_destroy(&mattr);
-        pthread_condattr_t cattr;
-        pthread_condattr_init(&cattr);
-        pthread_cond_init(&_cond, &cattr);
-        pthread_condattr_destroy(&cattr);
+        _mutex = PTHREAD_MUTEX_INITIALIZER;
+//        pthread_mutexattr_t mattr;
+//        pthread_mutexattr_init(&mattr);
+//        pthread_mutex_init(&_mutex, &mattr);
+//        pthread_mutexattr_destroy(&mattr);
+        _cond = PTHREAD_COND_INITIALIZER;
+//        pthread_condattr_t cattr;
+//        pthread_condattr_init(&cattr);
+//        pthread_cond_init(&_cond, &cattr);
+//        pthread_condattr_destroy(&cattr);
     }
     
     pthread_lock::~pthread_lock()
