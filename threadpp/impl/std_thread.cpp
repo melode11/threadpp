@@ -8,10 +8,11 @@
 
 #include "std_thread.h"
 #include <functional>
+#include <algorithm>
 using namespace std;
 namespace threadpp
 {
-    std_thread::id_type std_thread::null_id;
+    std_thread::id_type std_thread::null_id = 0;
     
     void* std_fp_delegate(std_thread::runnable r, void* context)
     {
@@ -45,7 +46,7 @@ namespace threadpp
     
     std_thread::id_type std_thread::get_id() const
     {
-        return _thread.get_id();
+        return std::hash<std::thread::id>()(_thread.get_id());
     }
     
     void std_thread::sleep(unsigned long millisecs)
@@ -55,6 +56,6 @@ namespace threadpp
     
     std_thread::id_type std_thread::current_thread_id()
     {
-        return this_thread::get_id();
+        return std::hash<std::thread::id>()(this_thread::get_id());
     }
 }

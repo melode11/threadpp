@@ -19,7 +19,7 @@ namespace threadpp
         void operator=(const std_thread& t){};
         std_thread(const std_thread& t){};
     public:
-        typedef std::thread::id id_type;
+        typedef unsigned long long id_type;
         
         typedef void (*runnable)(void* ctx);
         

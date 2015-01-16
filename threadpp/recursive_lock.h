@@ -35,7 +35,7 @@ namespace threadpp
     template <typename locktype,typename threadtype>
     void recursive_lock<locktype,threadtype>::lock()
     {
-        unsigned int tid = threadtype::current_thread_id();
+        typename threadtype::id_type tid = threadtype::current_thread_id();
         if(tid == _owner)
         {
             _count++;
@@ -51,7 +51,7 @@ namespace threadpp
     template <typename locktype,typename threadtype>
     void recursive_lock<locktype,threadtype>::unlock()
     {
-        unsigned int tid = threadtype::current_thread_id();
+        typename threadtype::id_type tid = threadtype::current_thread_id();
         ASSERT(tid == _owner,"%s", "unlock failed,try to unlock not owned mutex");
         _count--;
         if (_count == 0) {
