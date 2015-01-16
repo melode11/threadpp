@@ -15,7 +15,7 @@ namespace threadpp
     class recursive_lock
     {
         locktype _lock;
-        volatile threadtype::id_type _owner;
+        volatile typename threadtype::id_type _owner;
         volatile unsigned int _count;
     public:
         recursive_lock();
@@ -28,7 +28,7 @@ namespace threadpp
     };
     
     template <typename locktype,typename threadtype>
-    recursive_lock<locktype,threadtype>::recursive_lock():_owner(0),_count(0)
+    recursive_lock<locktype,threadtype>::recursive_lock():_owner(threadtype::null_id),_count(0)
     {
     }
     
@@ -55,6 +55,7 @@ namespace threadpp
         ASSERT(tid == _owner,"%s", "unlock failed,try to unlock not owned mutex");
         _count--;
         if (_count == 0) {
+            _owner = threadtype::null_id;
             _lock.unlock();
         }
     }
@@ -62,9 +63,9 @@ namespace threadpp
     template <typename locktype,typename threadtype>
     void recursive_lock<locktype,threadtype>::wait()
     {
-        threadtype::id_type owner = _owner;
+        typename threadtype::id_type owner = _owner;
         unsigned count = _count;
-        _owner = 0;
+        _owner = threadtype::null_id;
         _count = 0;
         _lock.wait();
         _owner = owner;
@@ -75,9 +76,9 @@ namespace threadpp
     template <typename locktype,typename threadtype>
     void recursive_lock<locktype,threadtype>::wait(unsigned long millisecs)
     {
-        threadtype::id_type owner = _owner;
+        typename threadtype::id_type owner = _owner;
         unsigned count = _count;
-        _owner = 0;
+        _owner = threadtype::null_id;
         _count = 0;
         _lock.wait(millisecs);
         _owner = owner;
