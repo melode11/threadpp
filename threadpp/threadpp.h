@@ -9,13 +9,13 @@
 #ifndef threadpp_threadpp_h
 #define threadpp_threadpp_h
 
-#if __cplusplus>=201103L
-#include "impl/std_thread.h"
-#include "impl/std_recursivelock.h"
+#if __posix || __APPLE__ || __linux
+#include "impl/pthread_thread.h"
+#include "impl/pthread_recursivelock.h"
 namespace threadpp
 {
-    typedef std_thread thread;
-    typedef std_recursivelock recursivelock;
+    typedef pthread_thread thread;
+    typedef pthread_recursivelock recursivelock;
 }
 #elif defined(WIN32)
 #include "impl/win_thread.h"
@@ -25,13 +25,13 @@ namespace threadpp
     typedef win_thread thread;
     typedef win_recursivelock recursivelock;
 }
-#else
-#include "impl/pthread_thread.h"
-#include "impl/pthread_recursivelock.h"
+#elif __cplusplus>=201103L
+#include "impl/std_thread.h"
+#include "impl/std_recursivelock.h"
 namespace threadpp
 {
-    typedef pthread_thread thread;
-    typedef pthread_recursivelock recursivelock;
+    typedef std_thread thread;
+    typedef std_recursivelock recursivelock;
 }
 #endif
 #endif

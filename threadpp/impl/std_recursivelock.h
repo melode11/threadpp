@@ -15,7 +15,6 @@ namespace threadpp
     class std_recursivelock
     {
         std::recursive_mutex _mutex;
-        std::unique_lock<std::recursive_mutex> _lock;
         std::condition_variable_any _cond;
         void operator=(const std_recursivelock& l){};
         std_recursivelock(const std_recursivelock& l){};

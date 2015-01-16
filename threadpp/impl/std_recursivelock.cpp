@@ -12,7 +12,7 @@ using namespace std;
 
 namespace threadpp{
     
-    std_recursivelock::std_recursivelock():_mutex(), _lock(_mutex),_cond()
+    std_recursivelock::std_recursivelock():_mutex(),_cond()
     {
     }
     
@@ -22,22 +22,22 @@ namespace threadpp{
     
     void std_recursivelock::lock()
     {
-        _lock.lock();
+        _mutex.lock();
     }
     
     void std_recursivelock::unlock()
     {
-        _lock.unlock();
+        _mutex.unlock();
     }
     
     void std_recursivelock::wait()
     {
-        _cond.wait(_lock);
+        _cond.wait(_mutex);
     }
     
     void std_recursivelock::wait(unsigned long millisecs)
     {
-        _cond.wait_for(_lock, chrono::milliseconds(millisecs));
+        _cond.wait_for(_mutex, chrono::milliseconds(millisecs));
     }
     
     void std_recursivelock::notify()

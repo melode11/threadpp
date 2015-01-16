@@ -10,6 +10,18 @@
 #include "../threadpp_assert.h"
 #include <errno.h>
 #include <cstring>
+
+#include <sys/time.h>
+
+void timespec_for(struct timespec* t,unsigned long millisecs) {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+//    t->tv_sec = tv.tv_sec;
+    t->tv_nsec = tv.tv_usec*1000 + millisecs*1000000;
+    t->tv_sec = tv.tv_sec + (t->tv_nsec/1000000000);
+    t->tv_nsec = t->tv_nsec%1000000000;
+}
+
 namespace threadpp{
     pthread_recursivelock::pthread_recursivelock()
     {
@@ -50,7 +62,8 @@ namespace threadpp{
     
     void pthread_recursivelock::wait(unsigned long millisecs)
     {
-        struct timespec ts = (struct timespec){.tv_sec = long(millisecs/1000),.tv_nsec = long((millisecs%1000)*1000000)};
+        struct timespec ts;
+        timespec_for(&ts,millisecs);
         int code = pthread_cond_timedwait(&_cond, &_mutex, &ts);
         ASSERT(code == 0 || code == ETIMEDOUT, "timed wait failed,error:%s",strerror(code));
     }
