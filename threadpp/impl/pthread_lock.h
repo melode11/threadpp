@@ -31,4 +31,5 @@ namespace threadpp
         void notify_all();
     };
 }
+#include "pthread_lock.hpp"
 #endif /* defined(__threadpp__pthread_lock__) */

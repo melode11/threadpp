@@ -33,5 +33,5 @@ namespace threadpp
     };
 }
 
-
+#include "win_lock.hpp"
 #endif /* defined(__threadpp__win_lock__) */

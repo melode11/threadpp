@@ -36,6 +36,5 @@ namespace threadpp
         static void sleep(unsigned long millisecs);
     };
 }
-
-
+#include "std_thread.hpp"
 #endif /* defined(__threadpp__std_thread__) */

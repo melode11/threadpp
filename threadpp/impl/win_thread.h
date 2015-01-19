@@ -48,4 +48,5 @@ namespace threadpp
     };
 }
 
+#include "win_thread.hpp"
 #endif /* defined(__threadpp__win_thread__) */

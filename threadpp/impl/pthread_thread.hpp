@@ -6,7 +6,9 @@
 //  Copyright (c) 2015 Melo Yao. All rights reserved.
 //
 
-#include "pthread_thread.h"
+#ifndef __threadpp__pthread_thread__hpp__
+#define __threadpp__pthread_thread__hpp__
+
 #include <errno.h>
 #include "../threadpp_assert.h"
 #include <cstring>
@@ -16,14 +18,14 @@ namespace threadpp
 {
     pthread_thread::id_type pthread_thread::null_id = 0;
     
-    void* pthread_thread::pthread_fp_delegate(void* ctx)
+    inline void* pthread_thread::pthread_fp_delegate(void* ctx)
     {
         pthread_thread::pthread_context* pctx =static_cast<pthread_thread::pthread_context*>(ctx);
         pctx->fp(pctx->context);
         return NULL;
     }
     
-    pthread_thread::pthread_thread(runnable r,void* t)
+    inline pthread_thread::pthread_thread(runnable r,void* t)
     {
         _context.fp = r;
         _context.context = t;
@@ -49,12 +51,12 @@ namespace threadpp
 //        pthread_attr_destroy(&tattr);
 //    }
     
-    pthread_thread::~pthread_thread()
+    inline pthread_thread::~pthread_thread()
     {
         ASSERT(_thread == 0,"%s","must join or detach a thread before destructing it");
     }
     
-    void pthread_thread::join()
+    inline void pthread_thread::join()
     {
         void* ret = NULL;
         int code = pthread_join(_thread, &ret);
@@ -62,7 +64,7 @@ namespace threadpp
         ASSERT(code==0,"join thread failed,error:%s",strerror(code));
     }
     
-    void pthread_thread::detach()
+    inline void pthread_thread::detach()
     {
         int code = pthread_detach(_thread);
         _thread = 0;
@@ -70,17 +72,17 @@ namespace threadpp
 
     }
     
-    bool pthread_thread::is_equal(const pthread_thread& t) const
+    inline bool pthread_thread::is_equal(const pthread_thread& t) const
     {
         return pthread_equal(_thread, t._thread);
     }
     
-    void pthread_thread::sleep(unsigned long millisecs)
+    inline void pthread_thread::sleep(unsigned long millisecs)
     {
         usleep((useconds_t)millisecs*1000);
     }
     
-    pthread_thread::id_type pthread_thread::get_id() const
+    inline pthread_thread::id_type pthread_thread::get_id() const
     {
 #ifdef __APPLE__
         __uint64_t tid;
@@ -91,14 +93,15 @@ namespace threadpp
 #endif
     }
     
-    pthread_thread::id_type pthread_thread::current_thread_id()
+    inline pthread_thread::id_type pthread_thread::current_thread_id()
     {
 #ifdef __APPLE__
         __uint64_t tid;
-        return pthread_threadid_np(pthread_self(), &tid);
+        pthread_threadid_np(pthread_self(), &tid);
         return tid;
 #else
         return (unsigned long long)(pthread_self());
 #endif
     }
 }
+#endif

@@ -29,5 +29,5 @@ namespace threadpp
         void notify_all();
     };
 }
-
+#include "std_lock.hpp"
 #endif /* defined(__threadpp__std_lock__) */
