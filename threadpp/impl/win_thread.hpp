@@ -16,7 +16,10 @@
 namespace threadpp
 {
 
-    win_thread::id_type win_thread::null_id = 0;
+    inline win_thread::id_type win_thread::null_id()
+    {
+        return 0;
+    }
     
 	inline win_thread::handle_t win_thread::win_fp_delegate(void *context)
     {

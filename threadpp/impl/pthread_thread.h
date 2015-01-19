@@ -27,7 +27,8 @@ namespace threadpp
     public:
         typedef void (*runnable)(void* ctx);
         typedef unsigned long long id_type;
-        static id_type null_id;
+        
+        static id_type null_id();
         
         pthread_thread(runnable r,void* t);
         

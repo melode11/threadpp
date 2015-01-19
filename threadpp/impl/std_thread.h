@@ -23,7 +23,7 @@ namespace threadpp
         
         typedef void (*runnable)(void* ctx);
         
-        static id_type null_id;
+        static id_type null_id();
         
         std_thread(runnable r,void* t);
         

@@ -34,7 +34,8 @@ namespace threadpp
     public:
         typedef void (*runnable)(void* ctx);
         typedef unsigned int id_type;
-        static id_type null_id;
+        
+        static id_type null_id();
         
         win_thread(runnable r,void* t);
         

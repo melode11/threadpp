@@ -11,7 +11,10 @@
 #include <algorithm>
 namespace threadpp
 {
-    std_thread::id_type std_thread::null_id = 0;
+    inline std_thread::id_type std_thread::null_id()
+    {
+        return 0;
+    }
     
     inline void* std_fp_delegate(std_thread::runnable r, void* context)
     {

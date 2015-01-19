@@ -16,7 +16,10 @@
 #include <unistd.h>
 namespace threadpp
 {
-    pthread_thread::id_type pthread_thread::null_id = 0;
+    inline pthread_thread::id_type pthread_thread::null_id()
+    {
+        return 0;
+    }
     
     inline void* pthread_thread::pthread_fp_delegate(void* ctx)
     {
